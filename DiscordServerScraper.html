@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiscordServerScraper | Kerosene</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #111;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-bar {
+            background: #000;
+            color: #fff;
+            padding: 25px 40px;
+            border-radius: 0 0 15px 15px;
+            border-bottom: 5px solid #ff0000;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .title i {
+            color: #ff0000;
+        }
+
+        .title-text {
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .byline {
+            font-size: 1.1rem;
+            color: #ff6666;
+            font-weight: 500;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 300px;
+            background: #f9f9f9;
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 5px 5px 0 #000;
+        }
+
+        .panel-title {
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ff0000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-box {
+            background: #ffe6e6;
+            border: 2px solid #ff0000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .warning-box i {
+            color: #ff0000;
+            font-size: 1.5rem;
+            margin-top: 3px;
+        }
+
+        .input-box {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #222;
+            font-size: 0.95rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #fff;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
+        }
+
+        .small-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .step-list {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .step-list ol {
+            padding-left: 25px;
+        }
+
+        .step-list li {
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to bottom, #ff0000, #cc0000);
+            color: white;
+            border: 2px solid #000;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(255,0,0,0.2);
+        }
+
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: #000;
+            color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid #ff0000;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ff0000;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .format-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .format-btn {
+            flex: 1;
+            padding: 12px;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .format-btn:hover {
+            background: #ffe6e6;
+        }
+
+        .format-btn.active {
+            background: #ff0000;
+            color: #fff;
+            border-color: #ff0000;
+        }
+
+        .output-area {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            background: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            border-top: 4px solid #ff0000;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-box {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0000, #cc0000);
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .message-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .message-box.success {
+            background: #e6ffe6;
+            border: 2px solid #00cc00;
+        }
+
+        .message-box.error {
+            background: #ffe6e6;
+            border: 2px solid #ff0000;
+        }
+
+        .member-preview {
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 20px;
+            display: none;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+        }
+        
+        .member-card {
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+        
+        .member-card:hover {
+            transform: translateX(5px);
+            border-color: #ff0000;
+        }
+        
+        .member-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 2px solid #000;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ff0000, #990000);
+        }
+        
+        .member-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-details {
+            flex: 1;
+        }
+        
+        .member-name {
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 3px;
+        }
+        
+        .member-id {
+            font-size: 0.85rem;
+            color: #666;
+            font-family: monospace;
+        }
+        
+        .member-roles {
+            margin-top: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .role-tag {
+            background: #000;
+            color: #ff0000;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        .bot-badge {
+            background: #ff0000;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: 8px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff0000;
+        }
+        
+        .member-count {
+            background: #000;
+            color: #ff0000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .disclaimer {
+            background: #000;
+            color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            border-top: 5px solid #ff0000;
+        }
+
+        .disclaimer h3 {
+            color: #ff0000;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .disclaimer-list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer-list li {
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+
+        .final-warning {
+            background: #990000;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 15px;
+            border: 2px solid #ff0000;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .panel {
+                min-width: 100%;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .member-preview {
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="top-bar">
+            <div class="title">
+                <i class="fas fa-users"></i>
+                <span class="title-text">DiscordServerScraper</span>
+            </div>
+            <div class="byline">Made by Kerosene</div>
+        </div>
+
+        <div class="main-content">
+            <div class="panel">
+                <h2 class="panel-title"><i class="fas fa-tools"></i> Setup & Config</h2>
+                
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        <strong>Heads up:</strong> A browser-based tool that lets you export member lists from the Discord servers you're part of, and it supports various file formats
+
+                    </div>
+                </div>
+
+                <div class="step-list">
+                    <p><strong>Quick guide to get started:</strong></p>
+                    <ol>
+                        <li>Log into Discord on your browser</li>
+                        <li>Open Dev Tools (F12) → Application tab</li>
+                        <li>Find "token" in Local Storage for discord.com</li>
+                        <li>Copy just the token value (no quotes)</li>
+                        <li>Turn on Developer Mode in Discord settings to get Server ID</li>
+                    </ol>
+                </div>
+
+                <div class="input-box">
+                    <label class="input-label">
+                        <i class="fas fa-key"></i> Discord Token
+                    </label>
+                    <input type="text" class="input-field" id="discordToken" placeholder="Paste your token here">
+                    <span class="small-text">Remove the quotation marks from the token value.</span>
+                </div>
+
+                <div class="input-box">
+                    <label class="input-label">
+                        <i class="fas fa-server"></i> Server ID
+                    </label>
+                    <input type="text" class="input-field" id="serverId" placeholder="Your server's ID goes here">
+                </div>
+
+                <button class="btn" id="scrapeBtn">
+                    <i class="fas fa-download"></i> Get Member List
+                </button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Grabbing member data from Discord...</p>
+                </div>
+
+                <div class="progress-box" id="progressBox">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Starting up...</div>
+                </div>
+
+                <div class="message-box success" id="successMsg">
+                    <i class="fas fa-check-circle"></i>
+                    <div id="successText"></div>
+                </div>
+
+                <div class="message-box error" id="errorMsg">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div id="errorText"></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2 class="panel-title"><i class="fas fa-chart-line"></i> Results & Export</h2>
+                
+                <div class="stats-container" id="statsContainer">
+                    <div class="stat-box">
+                        <div class="stat-number" id="totalCount">0</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="botCount">0</div>
+                        <div class="stat-label">Bots</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="roleCount">0</div>
+                        <div class="stat-label">Unique Roles</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="onlineEst">0</div>
+                        <div class="stat-label">Estimated Online</div>
+                    </div>
+                </div>
+
+                <div class="format-selector">
+                    <div class="format-btn active" data-format="json">
+                        <i class="fas fa-code"></i> JSON
+                    </div>
+                    <div class="format-btn" data-format="csv">
+                        <i class="fas fa-table"></i> CSV
+                    </div>
+                    <div class="format-btn" data-format="html">
+                        <i class="fas fa-file-code"></i> HTML
+                    </div>
+                </div>
+
+                <textarea class="output-area" id="outputData" placeholder="Your member data will show up here once fetched..." readonly></textarea>
+
+                <button class="btn" id="exportBtn" disabled>
+                    <i class="fas fa-file-download"></i> Download Data
+                </button>
+
+                <div class="member-preview" id="memberPreview">
+                    <div class="preview-header">
+                        <h3 style="margin: 0; color: #000;">All Members</h3>
+                        <div class="member-count" id="memberCount">0 Members</div>
+                    </div>
+                    <div id="previewList"></div>
+                </div>
+            </div>
+        </div>
+
+       <div class="disclaimer">
+    <h3><i class="fas fa-gavel"></i> Important Details.</h3>
+    <p style="margin-bottom: 15px; color: #fff;"><strong>This tool serves multiple purposes. Use responsibly:</strong></p>
+    <ul class="disclaimer-list">
+        <li>Archive and backup your server data</li>
+        <li>Useful for investigative or operational analysis</li>
+        <li>Track member activity and server growth</li>
+        <li>Supports token-based authentication.</li>
+    </ul>
+            
+            <div class="final-warning">
+                <i class="fas fa-radiation-alt"></i> 
+                Make sure the proper token you have is valid and not invalid for authentication. 
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMembers = [];
+        let currentFormat = 'json';
+        let roleSet = new Set();
+        const formatBtns = document.querySelectorAll('.format-btn');
+        const scrapeBtn = document.getElementById('scrapeBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const loadingEl = document.getElementById('loading');
+        const progressBox = document.getElementById('progressBox');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const outputArea = document.getElementById('outputData');
+        const previewList = document.getElementById('previewList');
+        const memberPreview = document.getElementById('memberPreview');
+        const statsContainer = document.getElementById('statsContainer');
+        const successMsg = document.getElementById('successMsg');
+        const errorMsg = document.getElementById('errorMsg');
+        const successText = document.getElementById('successText');
+        const errorText = document.getElementById('errorText');
+
+        formatBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                formatBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFormat = this.getAttribute('data-format');
+                refreshOutput();
+            });
+        });
+
+        scrapeBtn.addEventListener('click', async function() {
+            const tokenInput = document.getElementById('discordToken').value.trim();
+            const serverId = document.getElementById('serverId').value.trim();
+
+            if (!tokenInput) {
+                showError('Need a Discord token to proceed');
+                return;
+            }
+            if (!serverId) {
+                showError('Gotta have a Server ID');
+                return;
+            }
+
+            let token = tokenInput;
+            
+            if (token.startsWith('"') && token.endsWith('"')) {
+                token = token.slice(1, -1);
+            }
+            
+            if (!token.startsWith('mfa.') && !token.startsWith('MT') && !token.startsWith('ND')) {
+                showError('Token format looks incorrect. Should start with mfa., MT, or ND');
+                return;
+            }
+
+            resetDisplay();
+            startLoading();
+
+            try {
+                await grabMembers(token, serverId);
+            } catch (err) {
+                showError(err.message || 'Something went sideways');
+            } finally {
+                stopLoading();
+            }
+        });
+
+        exportBtn.addEventListener('click', function() {
+            saveToFile();
+        });
+
+        async function grabMembers(token, guildId) {
+            currentMembers = [];
+            roleSet = new Set();
+
+            const headers = {
+                'Authorization': token,
+                'Content-Type': 'application/json'
+            };
+
+            try {
+                const testAuth = await fetch('https://discord.com/api/v9/users/@me', {
+                    headers: headers
+                });
+
+                if (!testAuth.ok) {
+                    throw new Error(`Token invalid: ${testAuth.status}`);
+                }
+
+                const userData = await testAuth.json();
+                showSuccess(`Authenticated as: ${userData.username}#${userData.discriminator}`);
+
+                progressBox.style.display = 'block';
+                updateProgress(0, 100);
+                showSuccess('Connecting to Discord Gateway...');
+
+                const members = await connectToGatewayAndGetMembers(token, guildId);
+                
+                if (members && members.length > 0) {
+                    currentMembers = members;
+                    updateProgress(100, 100);
+                    updateStats();
+                    refreshOutput();
+                    showPreview();
+                    showSuccess(`Got ${currentMembers.length} members via WebSocket`);
+                } else {
+                    throw new Error('No members retrieved via WebSocket');
+                }
+
+            } catch (err) {
+                throw new Error(`Failed: ${err.message}`);
+            }
+        }
+
+        async function connectToGatewayAndGetMembers(token, guildId) {
+            return new Promise((resolve, reject) => {
+                let socket = null;
+                let heartbeatInterval = null;
+                let members = [];
+                let timeout = null;
+                let memberChunksReceived = new Set();
+                let totalChunksExpected = 0;
+                let totalMembersExpected = 0;
+                let requestId = Math.floor(Math.random() * 1000000);
+                
+                const cleanup = () => {
+                    if (heartbeatInterval) clearInterval(heartbeatInterval);
+                    if (socket) socket.close();
+                    if (timeout) clearTimeout(timeout);
+                };
+                
+                timeout = setTimeout(() => {
+                    cleanup();
+                    if (members.length > 0) {
+                        resolve(members);
+                    } else {
+                        reject(new Error('WebSocket connection timeout'));
+                    }
+                }, 60000);
+                
+                fetch('https://discord.com/api/v9/gateway', {
+                    headers: { 'Authorization': token }
+                })
+                .then(res => res.json())
+                .then(gatewayData => {
+                    const wsUrl = `${gatewayData.url}?v=9&encoding=json`;
+                    socket = new WebSocket(wsUrl);
+                    
+                    socket.onopen = () => {
+                        showSuccess('WebSocket connected');
+                    };
+                    
+                    socket.onmessage = (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            
+                            if (data.op === 10) {
+                                const heartbeatMs = data.d.heartbeat_interval;
+                                
+                                socket.send(JSON.stringify({
+                                    op: 2,
+                                    d: {
+                                        token: token,
+                                        properties: {
+                                            $os: "windows",
+                                            $browser: "chrome",
+                                            $device: ""
+                                        },
+                                        compress: false,
+                                        large_threshold: 250,
+                                        guilds: [],
+                                        presence: {
+                                            status: "online",
+                                            since: 0,
+                                            activities: [],
+                                            afk: false
+                                        }
+                                    }
+                                }));
+                                
+                                heartbeatInterval = setInterval(() => {
+                                    if (socket.readyState === WebSocket.OPEN) {
+                                        socket.send(JSON.stringify({ op: 1, d: null }));
+                                    }
+                                }, heartbeatMs);
+                                
+                            } else if (data.t === 'READY') {
+                                showSuccess('Gateway ready, requesting member list...');
+                                
+                                socket.send(JSON.stringify({
+                                    op: 8,
+                                    d: {
+                                        guild_id: guildId,
+                                        query: "",
+                                        limit: 0,
+                                        presences: true,
+                                        user_ids: [],
+                                        nonce: `members_${requestId}`
+                                    }
+                                }));
+                                
+                            } else if (data.t === 'GUILD_MEMBERS_CHUNK') {
+                                const chunkIndex = data.d.chunk_index || 0;
+                                const chunkCount = data.d.chunk_count || 1;
+                                const nonce = data.d.nonce || '';
+                                
+                                if (nonce.includes(`members_${requestId}`)) {
+                                    if (totalChunksExpected === 0) {
+                                        totalChunksExpected = chunkCount;
+                                        totalMembersExpected = data.d.member_count || 0;
+                                        showSuccess(`Receiving ${totalMembersExpected} members in ${chunkCount} chunks...`);
+                                    }
+                                    
+                                    if (!memberChunksReceived.has(chunkIndex)) {
+                                        memberChunksReceived.add(chunkIndex);
+                                        
+                                        data.d.members.forEach(member => {
+                                            if (member.user) {
+                                                if (member.roles) {
+                                                    member.roles.forEach(role => roleSet.add(role));
+                                                }
+                                                
+                                                members.push({
+                                                    id: member.user.id,
+                                                    username: member.user.username,
+                                                    tag: member.user.discriminator,
+                                                    global_name: member.user.global_name,
+                                                    avatar_hash: member.user.avatar,
+                                                    is_bot: member.user.bot || false,
+                                                    nickname: member.nick || null,
+                                                    joined: member.joined_at,
+                                                    roles: member.roles || [],
+                                                    boosting: member.premium_since,
+                                                    pending: member.pending || false
+                                                });
+                                            }
+                                        });
+                                        
+                                        const progressValue = Math.min(memberChunksReceived.size / totalChunksExpected, 1);
+                                        const memberProgress = Math.min(members.length / Math.max(totalMembersExpected, members.length * 2), 1);
+                                        const combinedProgress = (progressValue + memberProgress) / 2;
+                                        
+                                        updateProgress(Math.floor(combinedProgress * 100), 100);
+                                        showSuccess(`Chunk ${chunkIndex + 1}/${chunkCount}: ${members.length} members so far`);
+                                        
+                                        if (memberChunksReceived.size >= totalChunksExpected) {
+                                            setTimeout(() => {
+                                                cleanup();
+                                                clearTimeout(timeout);
+                                                resolve(members);
+                                            }, 1000);
+                                        }
+                                    }
+                                }
+                                
+                            } else if (data.t === 'GUILD_CREATE') {
+                                if (data.d.id === guildId) {
+                                    const guildMembers = data.d.members || [];
+                                    
+                                    guildMembers.forEach(member => {
+                                        if (member.user) {
+                                            if (member.roles) {
+                                                member.roles.forEach(role => roleSet.add(role));
+                                            }
+                                            
+                                            members.push({
+                                                id: member.user.id,
+                                                username: member.user.username,
+                                                tag: member.user.discriminator,
+                                                global_name: member.user.global_name,
+                                                avatar_hash: member.user.avatar,
+                                                is_bot: member.user.bot || false,
+                                                nickname: member.nick || null,
+                                                joined: member.joined_at,
+                                                roles: member.roles || [],
+                                                boosting: member.premium_since,
+                                                pending: member.pending || false
+                                            });
+                                        }
+                                    });
+                                    
+                                    const estimatedCount = data.d.member_count || members.length * 3;
+                                    updateProgress(Math.min(members.length / estimatedCount * 100, 100), 100);
+                                    
+                                    if (members.length >= estimatedCount * 0.9 || members.length > 100) {
+                                        setTimeout(() => {
+                                            cleanup();
+                                            clearTimeout(timeout);
+                                            resolve(members);
+                                        }, 1000);
+                                    }
+                                }
+                            }
+                            
+                        } catch (err) {
+                            console.error('WebSocket error:', err);
+                        }
+                    };
+                    
+                    socket.onerror = (error) => {
+                        cleanup();
+                        if (members.length > 0) {
+                            clearTimeout(timeout);
+                            resolve(members);
+                        } else {
+                            reject(new Error(`WebSocket error: ${error.message}`));
+                        }
+                    };
+                    
+                    socket.onclose = () => {
+                        cleanup();
+                        if (members.length > 0) {
+                            clearTimeout(timeout);
+                            resolve(members);
+                        } else {
+                            reject(new Error('WebSocket closed without data'));
+                        }
+                    };
+                    
+                })
+                .catch(err => {
+                    cleanup();
+                    reject(new Error(`Gateway fetch failed: ${err.message}`));
+                });
+            });
+        }
+
+        function updateProgress(now, total) {
+            const percent = Math.min((now / total) * 100, 100);
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `Grabbed ${now} of ${total} (${Math.round(percent)}%)`;
+        }
+
+        function updateStats() {
+            const botTotal = currentMembers.filter(m => m.is_bot).length;
+            const onlineGuess = Math.floor(currentMembers.length * 0.3);
+            
+            document.getElementById('totalCount').textContent = currentMembers.length;
+            document.getElementById('botCount').textContent = botTotal;
+            document.getElementById('roleCount').textContent = roleSet.size;
+            document.getElementById('onlineEst').textContent = onlineGuess;
+            
+            const memberCountElement = document.getElementById('memberCount');
+            if (memberCountElement) {
+                memberCountElement.textContent = `${currentMembers.length} Members`;
+            }
+            
+            updateMemberCards();
+        }
+
+        function updateMemberCards() {
+            previewList.innerHTML = '';
+            
+            if (currentMembers.length === 0) {
+                memberPreview.style.display = 'none';
+                return;
+            }
+            
+            const header = document.createElement('div');
+            header.className = 'preview-header';
+            header.innerHTML = `
+                <h3 style="margin: 0; color: #000;">All Members (${currentMembers.length})</h3>
+                <div class="member-count">${currentMembers.length} Members</div>
+            `;
+            previewList.appendChild(header);
+            
+            currentMembers.forEach(member => {
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                
+                const firstLetter = member.username?.charAt(0).toUpperCase() || '?';
+                const displayName = member.nickname || member.global_name || member.username;
+                const tagShow = member.tag !== '0' ? `#${member.tag}` : '';
+                
+                let avatarHtml = `<div class="member-avatar">${firstLetter}</div>`;
+                
+                if (member.avatar_hash) {
+                    const avatarUrl = `https://cdn.discordapp.com/avatars/${member.id}/${member.avatar_hash}.png?size=64`;
+                    avatarHtml = `
+                        <div class="member-avatar">
+                            <img src="${avatarUrl}" alt="${displayName}" class="member-avatar-img" 
+                                 onerror="this.parentElement.innerHTML='${firstLetter}'; this.parentElement.style.background='linear-gradient(135deg, #ff0000, #990000)';">
+                        </div>
+                    `;
+                }
+                
+                const rolesHtml = member.roles && member.roles.length > 0 
+                    ? `<div class="member-roles">${member.roles.slice(0, 3).map(role => `<span class="role-tag">Role ${role.slice(0, 6)}</span>`).join('')}${member.roles.length > 3 ? ` +${member.roles.length - 3} more` : ''}</div>`
+                    : '';
+                
+                card.innerHTML = `
+                    ${avatarHtml}
+                    <div class="member-details">
+                        <div class="member-name">
+                            ${displayName}${tagShow}
+                            ${member.is_bot ? '<span class="bot-badge">BOT</span>' : ''}
+                            ${member.boosting ? '<span style="background: #9c27b0; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-left: 8px;">BOOST</span>' : ''}
+                        </div>
+                        <div class="member-id">
+                            ID: ${member.id} | Joined: ${formatDate(member.joined)}
+                            ${member.pending ? ' | <span style="color: #ff9900;">Pending</span>' : ''}
+                        </div>
+                        ${rolesHtml}
+                    </div>
+                `;
+                
+                previewList.appendChild(card);
+            });
+            
+            memberPreview.style.display = 'block';
+            previewList.scrollTop = 0;
+        }
+
+        function refreshOutput() {
+            if (currentMembers.length === 0) {
+                outputArea.value = '';
+                exportBtn.disabled = true;
+                return;
+            }
+
+            let outputText;
+            
+            if (currentFormat === 'json') {
+                outputText = JSON.stringify(currentMembers, null, 2);
+            } else if (currentFormat === 'csv') {
+                outputText = makeCSV();
+            } else if (currentFormat === 'html') {
+                outputText = makeHTML();
+            }
+            
+            outputArea.value = outputText;
+            exportBtn.disabled = false;
+        }
+
+        function makeCSV() {
+            const headers = ['ID', 'Username', 'Tag', 'Display Name', 'Bot', 'Joined Date', 'Roles', 'Boosting Since'];
+            const rows = currentMembers.map(member => [
+                member.id,
+                `"${member.username}"`,
+                member.tag,
+                `"${member.nickname || member.global_name || member.username}"`,
+                member.is_bot ? 'Yes' : 'No',
+                member.joined,
+                `"${member.roles.join(', ')}"`,
+                member.boosting || ''
+            ]);
+            
+            return [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+        }
+
+        function makeHTML() {
+            const botCount = currentMembers.filter(m => m.is_bot).length;
+            const boostCount = currentMembers.filter(m => m.boosting).length;
+            
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <title>Discord Members - DiscordServerScraper</title>
+    <style>
+        body { background: #f5f5f5; font-family: Arial, sans-serif; margin: 30px; }
+        .container { max-width: 1400px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 3px solid #000; }
+        .header { background: #000; color: #ff0000; padding: 25px; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+        h1 { margin: 0; font-size: 2.5rem; }
+        .subtitle { color: #ccc; margin-top: 10px; }
+        .stats { display: flex; justify-content: space-around; margin: 25px 0; }
+        .stat { background: #000; color: #ff0000; padding: 20px; border-radius: 8px; text-align: center; flex: 1; margin: 0 10px; border: 2px solid #ff0000; }
+        .stat-number { font-size: 2.5rem; font-weight: bold; }
+        .member-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; margin-top: 30px; }
+        .member-item { background: #fff; border: 2px solid #000; border-radius: 8px; padding: 15px; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .member-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,0,0,0.1); border-color: #ff0000; }
+        .avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #000; background: linear-gradient(135deg, #ff0000, #990000); overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .member-info { flex: 1; }
+        .member-name { font-weight: bold; color: #000; margin-bottom: 5px; }
+        .member-id { font-size: 0.8rem; color: #666; font-family: monospace; margin-bottom: 5px; }
+        .member-meta { font-size: 0.8rem; color: #666; }
+        .badge { background: #ff0000; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-left: 5px; }
+        .bot-badge { background: #ff0000; }
+        .boost-badge { background: #9c27b0; }
+        .pending-badge { background: #ff9900; }
+        .footer { margin-top: 40px; text-align: center; color: #666; font-size: 0.9rem; }
+        .summary { background: #ffe6e6; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #ff0000; }
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center; }
+        .summary-item { background: white; padding: 15px; border-radius: 8px; border: 2px solid #000; }
+        .summary-number { font-size: 1.5rem; font-weight: bold; color: #ff0000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Discord Member Export</h1>
+            <div class="subtitle">Generated by DiscordServerScraper | Made by Kerosene</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">${currentMembers.length}</div>
+                <div>Total Members</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">${botCount}</div>
+                <div>Bots</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">${roleSet.size}</div>
+                <div>Unique Roles</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">${boostCount}</div>
+                <div>Boosters</div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h3 style="margin-top: 0; color: #000;">Server Summary</h3>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-number">${currentMembers.length}</div>
+                    <div>Total Members</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${botCount}</div>
+                    <div>Bots</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${roleSet.size}</div>
+                    <div>Unique Roles</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">${boostCount}</div>
+                    <div>Boosters</div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 style="color: #000; margin-bottom: 20px;">All Members (${currentMembers.length})</h2>
+        <div class="member-grid">
+            ${currentMembers.map(member => {
+                const displayName = member.nickname || member.global_name || member.username;
+                const tagShow = member.tag !== '0' ? '#' + member.tag : '';
+                const firstLetter = member.username?.charAt(0).toUpperCase() || '?';
+                const avatarUrl = member.avatar_hash 
+                    ? `https://cdn.discordapp.com/avatars/${member.id}/${member.avatar_hash}.png?size=128`
+                    : null;
+                
+                return `
+                <div class="member-item">
+                    <div class="avatar">
+                        ${avatarUrl ? `<img src="${avatarUrl}" alt="${displayName}">` : firstLetter}
+                    </div>
+                    <div class="member-info">
+                        <div class="member-name">
+                            ${displayName}${tagShow}
+                            ${member.is_bot ? '<span class="badge bot-badge">BOT</span>' : ''}
+                            ${member.boosting ? '<span class="badge boost-badge">BOOST</span>' : ''}
+                            ${member.pending ? '<span class="badge pending-badge">PENDING</span>' : ''}
+                        </div>
+                        <div class="member-id">ID: ${member.id}</div>
+                        <div class="member-meta">
+                            Joined: ${formatDate(member.joined)}<br>
+                            Roles: ${member.roles.length}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('')}
+        </div>
+        
+        <div class="footer">
+            <p>Exported on: ${new Date().toLocaleString()}</p>
+            <p>Tool: DiscordServerScraper | Kerosene</p>
+        </div>
+    </div>
+</body>
+</html>`;
+        }
+
+        function saveToFile() {
+            const data = outputArea.value;
+            const timeStamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+            let mime, ext;
+            
+            if (currentFormat === 'json') {
+                mime = 'application/json';
+                ext = 'json';
+            } else if (currentFormat === 'csv') {
+                mime = 'text/csv';
+                ext = 'csv';
+            } else if (currentFormat === 'html') {
+                mime = 'text/html';
+                ext = 'html';
+            }
+            
+            const blob = new Blob([data], { type: mime });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `discord-members-${timeStamp}.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Unknown';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+        }
+
+        function startLoading() {
+            loadingEl.style.display = 'block';
+            scrapeBtn.disabled = true;
+            scrapeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Working...';
+        }
+
+        function stopLoading() {
+            loadingEl.style.display = 'none';
+            scrapeBtn.disabled = false;
+            scrapeBtn.innerHTML = '<i class="fas fa-download"></i> Get Member List';
+        }
+
+        function showPreview() {
+            memberPreview.style.display = 'block';
+        }
+
+        function showSuccess(msg) {
+            successText.textContent = msg;
+            successMsg.style.display = 'flex';
+            errorMsg.style.display = 'none';
+        }
+
+        function showError(msg) {
+            errorText.textContent = msg;
+            errorMsg.style.display = 'flex';
+            successMsg.style.display = 'none';
+            stopLoading();
+        }
+
+        function resetDisplay() {
+            currentMembers = [];
+            roleSet = new Set();
+            outputArea.value = '';
+            previewList.innerHTML = '';
+            memberPreview.style.display = 'none';
+            progressBox.style.display = 'none';
+            progressFill.style.width = '0%';
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'none';
+            exportBtn.disabled = true;
+            
+            document.getElementById('totalCount').textContent = '0';
+            document.getElementById('botCount').textContent = '0';
+            document.getElementById('roleCount').textContent = '0';
+            document.getElementById('onlineEst').textContent = '0';
+            
+            const memberCountElement = document.getElementById('memberCount');
+            if (memberCountElement) {
+                memberCountElement.textContent = '0 Members';
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const testBtn = document.createElement('button');
+            testBtn.className = 'btn';
+            testBtn.style.marginTop = '15px';
+            testBtn.innerHTML = '<i class="fas fa-vial"></i> Load Test Data';
+            testBtn.onclick = loadSample;
+            document.querySelector('.panel:first-child').appendChild(testBtn);
+        });
+
+        function loadSample() {
+            currentMembers = [
+                {
+                    id: "123456789012345678",
+                    username: "SampleUser",
+                    tag: "1234",
+                    global_name: "Sample User",
+                    avatar_hash: "abc123",
+                    is_bot: false,
+                    nickname: "Test Nick",
+                    joined: "2023-03-15T14:30:00.000Z",
+                    roles: ["123", "456"],
+                    boosting: null,
+                    pending: false
+                },
+                {
+                    id: "234567890123456789",
+                    username: "HelperBot",
+                    tag: "0",
+                    global_name: null,
+                    avatar_hash: "def456",
+                    is_bot: true,
+                    nickname: null,
+                    joined: "2022-11-20T09:15:00.000Z",
+                    roles: ["123"],
+                    boosting: null,
+                    pending: false
+                },
+                {
+                    id: "345678901234567890",
+                    username: "AnotherPerson",
+                    tag: "5678",
+                    global_name: "Friendly User",
+                    avatar_hash: "ghi789",
+                    is_bot: false,
+                    nickname: "GamerTag",
+                    joined: "2023-06-10T16:45:00.000Z",
+                    roles: ["456"],
+                    boosting: "2023-08-01T00:00:00.000Z",
+                    pending: false
+                }
+            ];
+            
+            roleSet = new Set(["123", "456"]);
+            updateStats();
+            refreshOutput();
+            showPreview();
+            showSuccess('Loaded sample data - 3 members');
+        }
+    </script>
+</body>
+</html>
