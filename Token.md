@@ -13,7 +13,7 @@
 - Install a Local Storage viewer extension
 - Navigate to Discord.com and extract token from Local Storage
 
-#### **3:JavaScript Console**
+#### **3: JavaScript Console**
 - Log into Discord in your browser
 - Press `F12` and go to **Console** tab
 - Paste and run this code:
