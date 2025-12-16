@@ -1,4 +1,15 @@
-# DiscordServerScraper
-> A browser-based tool for exporting Discord server member lists with authentication via Discord tokens. This tool connects directly to Discord's Gateway API via WebSocket to retrieve data such as Usernames, UID, Avatar, Join Dates, Roles, Etc. 
+# **DiscordServerScraper**
+> A browser-based tool that exports Discord server member lists using Discord token authentication. It connects directly to Discord’s Gateway API via WebSocket to fetch details like usernames, user IDs, avatars, join dates, roles, and more.
+
+**Features:**
+- Token Authentication
+- Member Preview
+- Test Mode
+- Format Export
+- User friendly
+- Websocket Integration 
+
+**Theme**:
+- Modern UI with Dark red.
 
 
