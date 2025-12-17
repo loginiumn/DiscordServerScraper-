@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DiscordServerScraper | Kerosene</title>
+    <title>DiscordServerScraper</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -531,10 +531,11 @@
                     <label class="input-label">
                         <i class="fas fa-key"></i> Discord Token
                     </label>
-                    <input type="text" class="input-field" id="discordToken" placeholder="Paste your token here">
+                    <input type="password" class="input-field" id="discordToken" placeholder="Paste your token here">
                     <span class="small-text">Remove the quotation marks from the token value.</span>
+                    <span class="button" id="toggleTokenVisibility" class="token-toggle" title="Show token">
+            <i class="fas fa-eye"></i>
                 </div>
-
                 <div class="input-box">
                     <label class="input-label">
                         <i class="fas fa-server"></i> Server ID
@@ -591,17 +592,20 @@
                     </div>
                 </div>
 
-                <div class="format-selector">
-                    <div class="format-btn active" data-format="json">
-                        <i class="fas fa-code"></i> JSON
-                    </div>
-                    <div class="format-btn" data-format="csv">
-                        <i class="fas fa-table"></i> CSV
-                    </div>
-                    <div class="format-btn" data-format="html">
-                        <i class="fas fa-file-code"></i> HTML
-                    </div>
-                </div>
+<div class="format-selector">
+    <div class="format-btn active" data-format="json">
+        <i class="fas fa-code"></i> JSON
+    </div>
+    <div class="format-btn" data-format="csv">
+        <i class="fas fa-table"></i> CSV
+    </div>
+    <div class="format-btn" data-format="html">
+        <i class="fas fa-file-code"></i> HTML
+    </div>
+    <div class="format-btn" data-format="txt">
+        <i class="fas fa-file-alt"></i> TXT
+    </div>
+</div>
 
                 <textarea class="output-area" id="outputData" placeholder="Your member data will show up here once fetched..." readonly></textarea>
 
@@ -695,7 +699,7 @@
             try {
                 await grabMembers(token, serverId);
             } catch (err) {
-                showError(err.message || 'Something went sideways');
+                showError(err.message || 'API Error occurred while fetching members');
             } finally {
                 stopLoading();
             }
@@ -740,7 +744,7 @@
                     showPreview();
                     showSuccess(`Got ${currentMembers.length} members via WebSocket`);
                 } else {
-                    throw new Error('No members retrieved via WebSocket');
+                    throw new Error('No members retrieved via WebSocket....');
                 }
 
             } catch (err) {
@@ -1069,11 +1073,10 @@
         }
 
         function makeCSV() {
-            const headers = ['ID', 'Username', 'Tag', 'Display Name', 'Bot', 'Joined Date', 'Roles', 'Boosting Since'];
+            const headers = ['Username', 'ID', 'Tag', 'Display Name', 'Bot', 'Joined Date', 'Roles', 'Boosting Since'];
             const rows = currentMembers.map(member => [
                 member.id,
                 `"${member.username}"`,
-                member.tag,
                 `"${member.nickname || member.global_name || member.username}"`,
                 member.is_bot ? 'Yes' : 'No',
                 member.joined,
@@ -1225,8 +1228,13 @@
             } else if (currentFormat === 'html') {
                 mime = 'text/html';
                 ext = 'html';
-            }
-            
+                
+            } else if (currentFormat === 'txt') {
+                    mime = 'text/plain';
+                    ext = 'txt';
+                }
+        
+
             const blob = new Blob([data], { type: mime });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
