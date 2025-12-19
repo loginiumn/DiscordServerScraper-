@@ -10,12 +10,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Calibri', Tahoma, sans-serif;
         }
         body {
             background: #fff;
             color: #111;
             line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        body.dark-mode {
+            background: #0a0a0a;
+            color: #eee;
         }
         .wrapper {
             max-width: 1300px;
@@ -30,11 +35,13 @@
             border-bottom: 5px solid #ff0000;
             margin-bottom: 30px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .title {
             font-size: 2.8rem;
             font-weight: 800;
-            margin-bottom: 5px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -48,10 +55,22 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .byline {
-            font-size: 1.1rem;
-            color: #ff6666;
-            font-weight: 500;
+        .theme-toggle {
+            background: #ff0000;
+            border: 2px solid #000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        .theme-toggle:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
         }
         .main-content {
             display: flex;
@@ -66,6 +85,13 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 5px 5px 0 #000;
+            transition: all 0.3s ease;
+        }
+        .dark-mode .panel {
+            background: #1a1a1a;
+            border-color: #333;
+            color: #eee;
+            box-shadow: 5px 5px 0 #333;
         }
         .panel-title {
             font-size: 1.5rem;
@@ -77,6 +103,9 @@
             align-items: center;
             gap: 10px;
         }
+        .dark-mode .panel-title {
+            color: #fff;
+        }
         .warning-box {
             background: #ffe6e6;
             border: 2px solid #ff0000;
@@ -85,6 +114,11 @@
             margin-bottom: 25px;
             display: flex;
             gap: 15px;
+        }
+        .dark-mode .warning-box {
+            background: #2a0a0a;
+            border-color: #ff3333;
+            color: #ffcccc;
         }
         .warning-box i {
             color: #ff0000;
@@ -101,6 +135,9 @@
             color: #222;
             font-size: 0.95rem;
         }
+        .dark-mode .input-label {
+            color: #ddd;
+        }
         .input-field {
             width: 100%;
             padding: 16px;
@@ -110,16 +147,27 @@
             background: #fff;
             transition: all 0.3s;
         }
+        .dark-mode .input-field {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #fff;
+        }
         .input-field:focus {
             outline: none;
             border-color: #ff0000;
             box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
+        }
+        .dark-mode .input-field:focus {
+            box-shadow: 0 0 0 3px rgba(255,0,0,0.2);
         }
         .small-text {
             font-size: 0.85rem;
             color: #666;
             margin-top: 6px;
             display: block;
+        }
+        .dark-mode .small-text {
+            color: #aaa;
         }
         .step-list {
             background: #fff;
@@ -128,12 +176,20 @@
             padding: 20px;
             margin-bottom: 25px;
         }
+        .dark-mode .step-list {
+            background: #222;
+            border-color: #444;
+            color: #ddd;
+        }
         .step-list ol {
             padding-left: 25px;
         }
         .step-list li {
             margin-bottom: 12px;
             color: #333;
+        }
+        .dark-mode .step-list li {
+            color: #ccc;
         }
         .btn {
             display: block;
@@ -160,6 +216,9 @@
             transform: none;
             box-shadow: none;
         }
+        .dark-mode .btn:disabled {
+            background: #444;
+        }
         .stats-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -174,6 +233,10 @@
             text-align: center;
             border: 2px solid #ff0000;
         }
+        .dark-mode .stat-box {
+            background: #222;
+            border-color: #ff3333;
+        }
         .stat-number {
             font-size: 2.2rem;
             font-weight: 800;
@@ -187,12 +250,12 @@
             letter-spacing: 1px;
         }
         .format-selector {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 10px;
             margin-bottom: 20px;
         }
         .format-btn {
-            flex: 1;
             padding: 12px;
             background: #fff;
             border: 2px solid #000;
@@ -201,9 +264,21 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .dark-mode .format-btn {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #ddd;
         }
         .format-btn:hover {
             background: #ffe6e6;
+        }
+        .dark-mode .format-btn:hover {
+            background: #3a1a1a;
         }
         .format-btn.active {
             background: #ff0000;
@@ -221,6 +296,11 @@
             font-size: 0.9rem;
             resize: vertical;
             margin-bottom: 15px;
+        }
+        .dark-mode .output-area {
+            background: #1a1a1a;
+            border-color: #444;
+            color: #ddd;
         }
         .loading {
             display: none;
@@ -248,12 +328,19 @@
             margin-top: 20px;
             display: none;
         }
+        .dark-mode .progress-box {
+            background: #222;
+            border-color: #444;
+        }
         .progress-bar {
             height: 10px;
             background: #e0e0e0;
             border-radius: 5px;
             overflow: hidden;
             margin-bottom: 10px;
+        }
+        .dark-mode .progress-bar {
+            background: #444;
         }
         .progress-fill {
             height: 100%;
@@ -265,6 +352,9 @@
             text-align: center;
             font-weight: 500;
             color: #333;
+        }
+        .dark-mode .progress-text {
+            color: #ddd;
         }
         .message-box {
             padding: 15px;
@@ -278,9 +368,19 @@
             background: #e6ffe6;
             border: 2px solid #00cc00;
         }
+        .dark-mode .message-box.success {
+            background: #0a2a0a;
+            border-color: #00aa00;
+            color: #aaffaa;
+        }
         .message-box.error {
             background: #ffe6e6;
             border: 2px solid #ff0000;
+        }
+        .dark-mode .message-box.error {
+            background: #2a0a0a;
+            border-color: #ff3333;
+            color: #ffaaaa;
         }
         .member-preview {
             max-height: 500px;
@@ -292,6 +392,10 @@
             padding: 15px;
             background: #fff;
         }
+        .dark-mode .member-preview {
+            background: #1a1a1a;
+            border-color: #444;
+        }
         .member-card {
             background: #fff;
             border: 2px solid #000;
@@ -302,6 +406,10 @@
             align-items: center;
             gap: 15px;
             transition: all 0.3s;
+        }
+        .dark-mode .member-card {
+            background: #222;
+            border-color: #444;
         }
         .member-card:hover {
             transform: translateX(5px);
@@ -321,6 +429,9 @@
             overflow: hidden;
             background: linear-gradient(135deg, #ff0000, #990000);
         }
+        .dark-mode .member-avatar {
+            border-color: #666;
+        }
         .member-avatar-img {
             width: 100%;
             height: 100%;
@@ -334,10 +445,16 @@
             color: #000;
             margin-bottom: 3px;
         }
+        .dark-mode .member-name {
+            color: #fff;
+        }
         .member-id {
             font-size: 0.85rem;
             color: #666;
             font-family: monospace;
+        }
+        .dark-mode .member-id {
+            color: #aaa;
         }
         .member-roles {
             margin-top: 5px;
@@ -352,6 +469,10 @@
             border-radius: 4px;
             font-size: 0.7rem;
             font-weight: bold;
+        }
+        .dark-mode .role-tag {
+            background: #333;
+            color: #ff6666;
         }
         .bot-badge {
             background: #ff0000;
@@ -377,6 +498,10 @@
             font-weight: bold;
             font-size: 0.9rem;
         }
+        .dark-mode .member-count {
+            background: #222;
+            border-color: #ff3333;
+        }
         .server-list-container {
             max-height: 400px;
             overflow-y: auto;
@@ -384,6 +509,10 @@
             border: 2px solid #000;
             border-radius: 8px;
             display: none;
+        }
+        .dark-mode .server-list-container {
+            background: #1a1a1a;
+            border-color: #444;
         }
         .server-item {
             padding: 15px;
@@ -394,8 +523,14 @@
             gap: 15px;
             transition: all 0.3s;
         }
+        .dark-mode .server-item {
+            border-bottom-color: #444;
+        }
         .server-item:hover {
             background: #ffe6e6;
+        }
+        .dark-mode .server-item:hover {
+            background: #2a1a1a;
         }
         .server-item:last-child {
             border-bottom: none;
@@ -413,6 +548,9 @@
             border: 2px solid #000;
             background: linear-gradient(135deg, #ff0000, #990000);
         }
+        .dark-mode .server-icon {
+            border-color: #666;
+        }
         .server-info {
             flex: 1;
         }
@@ -421,10 +559,16 @@
             color: #000;
             margin-bottom: 3px;
         }
+        .dark-mode .server-name {
+            color: #fff;
+        }
         .server-id {
             font-size: 0.85rem;
             color: #666;
             font-family: monospace;
+        }
+        .dark-mode .server-id {
+            color: #aaa;
         }
         .disclaimer {
             background: #000;
@@ -433,6 +577,10 @@
             border-radius: 15px;
             margin-top: 40px;
             border-top: 5px solid #ff0000;
+        }
+        .dark-mode .disclaimer {
+            background: #111;
+            border-color: #ff3333;
         }
         .disclaimer h3 {
             color: #ff0000;
@@ -459,6 +607,10 @@
             font-weight: 600;
             margin-top: 15px;
             border: 2px solid #ff0000;
+        }
+        .dark-mode .final-warning {
+            background: #660000;
+            border-color: #ff3333;
         }
         .profile-display {
            background: #990000;
@@ -596,9 +748,26 @@
             transition: all 0.3s;
         }
 
+        .dark-mode .token-toggle-btn {
+            background: #222;
+            color: #ff6666;
+            border-color: #ff3333;
+        }
         .token-toggle-btn:hover {
             background: #ff0000;
             color: #fff;
+        }
+        .dark-mode .token-toggle-btn:hover {
+            background: #ff3333;
+        }
+        
+        .test-data-btn {
+            background: linear-gradient(to bottom, #ff0000, #ff0000);
+            border: 2px solid #000;
+            color: white;
+        }
+        .dark-mode .test-data-btn {
+            background: linear-gradient(to bottom,#ff0000, #ff0000);
         }
         
         @media (max-width: 768px) {
@@ -620,6 +789,14 @@
             .server-list-container {
                 max-height: 300px;
             }
+            .format-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -630,6 +807,9 @@
                 <i class="fas fa-users"></i>
                 <span class="title-text">DiscordServerScraper</span>
             </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i> Dark Mode
+            </button>
         </div>
 
         <div class="main-content">
@@ -639,7 +819,7 @@
                 <div class="warning-box">
                     <i class="fas fa-exclamation-circle"></i>
                     <div>
-                        <strong>Tool Information: </strong >A browser-based tool that lets you export Discord server member lists using DTA.
+                        <strong>Tool Information: </strong>A browser-based tool that lets you export Discord server member lists using DTA.
                     </div>
                 </div>
 
@@ -660,15 +840,8 @@
                     <input type="password" class="input-field" id="discordToken" placeholder="Paste your token here">
                     <span class="small-text">Remove the quotation marks from the token value.</span>
                     <button type="button" id="toggleTokenVisibility" class="token-toggle-btn">
-                        <i class="fas fa-eye"></i> Show Token (Off)
+                        <i class="fas fa-eye"></i> Show Token
                     </button>
-
-                <div class="input-box">
-                    <label class="input-label">
-                        <i class="fas fa-key"></i> Discord Token
-                    </label>
-                    <input type="text" class="input-field" id="discordToken" placeholder="Paste your token here">
-                    <span class="small-text">Remove quotation marks from token value.</span>
                 </div>
 
                 <button class="btn" id="fetchServersBtn">
@@ -687,6 +860,10 @@
 
                 <button class="btn" id="scrapeBtn">
                     <i class="fas fa-download"></i> Get Member List
+                </button>
+
+                <button class="btn test-data-btn" id="testDataBtn">
+                    <i class="fas fa-flask"></i> Load Test Data
                 </button>
 
                 <div class="loading" id="loading">
@@ -744,6 +921,12 @@
                     <div class="format-btn" data-format="html">
                         <i class="fas fa-file-code"></i> HTML
                     </div>
+                    <div class="format-btn" data-format="txt">
+                        <i class="fas fa-file-alt"></i> TXT
+                    </div>
+                    <div class="format-btn" data-format="i64">
+                        <i class="fas fa-file-export"></i> I64
+                    </div>
                 </div>
 
                 <textarea class="output-area" id="outputData" placeholder="Member data will appear here..." readonly></textarea>
@@ -789,6 +972,7 @@ const formatBtns = document.querySelectorAll('.format-btn');
 const scrapeBtn = document.getElementById('scrapeBtn');
 const fetchServersBtn = document.getElementById('fetchServersBtn');
 const exportBtn = document.getElementById('exportBtn');
+const testDataBtn = document.getElementById('testDataBtn');
 const loadingEl = document.getElementById('loading');
 const progressBox = document.getElementById('progressBox');
 const progressFill = document.getElementById('progressFill');
@@ -801,13 +985,29 @@ const successMsg = document.getElementById('successMsg');
 const errorMsg = document.getElementById('errorMsg');
 const successText = document.getElementById('successText');
 const errorText = document.getElementById('errorText');
-    const toggleTokenBtn = document.getElementById('toggleTokenVisibility');
+const toggleTokenBtn = document.getElementById('toggleTokenVisibility');
+const themeToggle = document.getElementById('themeToggle');
 const serverIdInput = document.getElementById('serverId');
 const tokenInput = document.getElementById('discordToken');
 
 tokenInput.addEventListener('input', function() {
     discordToken = this.value.trim();
 });
+
+themeToggle.addEventListener('click', function() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    this.innerHTML = isDark 
+        ? '<i class="fas fa-sun"></i> Light Mode' 
+        : '<i class="fas fa-moon"></i> Dark Mode';
+    
+    localStorage.setItem('darkMode', isDark);
+});
+
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+    themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+}
 
 formatBtns.forEach(btn => {
     btn.addEventListener('click', function() {
@@ -816,17 +1016,102 @@ formatBtns.forEach(btn => {
         currentFormat = this.getAttribute('data-format');
         refreshOutput();
     });
-      toggleTokenBtn.addEventListener('click', function() {
-            const tokenInput = document.getElementById('discordToken');
-            const isVisible = tokenInput.type === 'password';
-            
-            tokenInput.type = isVisible ? 'text' : 'password';
-            this.classList.toggle('active', isVisible);
-            this.innerHTML = isVisible 
-                ? '<i class="fas fa-eye-slash"></i> Hide Token (On)' 
-                : '<i class="fas fa-eye"></i> Show Token (Off)';
-        });
 });
+
+toggleTokenBtn.addEventListener('click', function() {
+    const isVisible = tokenInput.type === 'password';
+    tokenInput.type = isVisible ? 'text' : 'password';
+    this.innerHTML = isVisible 
+        ? '<i class="fas fa-eye-slash"></i> Hide Token' 
+        : '<i class="fas fa-eye"></i> Show Token';
+});
+
+testDataBtn.addEventListener('click', function() {
+    loadTestData();
+});
+
+function loadTestData() {
+    resetDisplay();
+    
+    const testMembers = [
+        {
+            id: '123456789012345678',
+            username: 'TestUser1',
+            discriminator: '0001',
+            global_name: 'Test User One',
+            avatar_hash: 'a_abc123',
+            is_bot: false,
+            nickname: 'Test Nickname',
+            joined: '2023-01-15T10:30:00.000Z',
+            roles: ['1234567890', '0987654321'],
+            boosting: null,
+            pending: false
+        },
+        {
+            id: '987654321098765432',
+            username: 'BotTest',
+            discriminator: '9999',
+            global_name: 'Bot User',
+            avatar_hash: 'b_def456',
+            is_bot: true,
+            nickname: null,
+            joined: '2023-02-20T14:45:00.000Z',
+            roles: ['1234567890'],
+            boosting: '2023-03-01T12:00:00.000Z',
+            pending: false
+        },
+        {
+            id: '555555555555555555',
+            username: 'RegularUser',
+            discriminator: '5555',
+            global_name: 'Regular User',
+            avatar_hash: null,
+            is_bot: false,
+            nickname: 'Server Nickname',
+            joined: '2023-03-10T09:15:00.000Z',
+            roles: ['0987654321', '1122334455'],
+            boosting: null,
+            pending: true
+        },
+        {
+            id: '666666666666666666',
+            username: 'AnotherBot',
+            discriminator: '7777',
+            global_name: 'Another Bot',
+            avatar_hash: 'c_ghi789',
+            is_bot: true,
+            nickname: 'Bot Assistant',
+            joined: '2023-04-05T16:20:00.000Z',
+            roles: ['1234567890', '9988776655'],
+            boosting: null,
+            pending: false
+        },
+        {
+            id: '777777777777777777',
+            username: 'PowerUser',
+            discriminator: '1234',
+            global_name: 'Power User',
+            avatar_hash: 'd_jkl012',
+            is_bot: false,
+            nickname: null,
+            joined: '2023-01-01T00:00:00.000Z',
+            roles: ['1234567890', '0987654321', '1122334455', '9988776655'],
+            boosting: '2023-05-01T00:00:00.000Z',
+            pending: false
+        }
+    ];
+    
+    currentMembers = testMembers;
+    roleSet = new Set(['1234567890', '0987654321', '1122334455', '9988776655']);
+    
+    updateStats();
+    refreshOutput();
+    showPreview();
+    showSuccess('Loaded 5 test members');
+    
+    progressBox.style.display = 'none';
+    exportBtn.disabled = false;
+}
 
 fetchServersBtn.addEventListener('click', async function() {
     if (!discordToken) {
@@ -873,7 +1158,7 @@ fetchServersBtn.addEventListener('click', async function() {
                 serverListContainer.querySelectorAll('.server-item').forEach(item => {
                     item.style.background = '';
                 });
-                serverItem.style.background = '#ffe6e6';
+                serverItem.style.background = document.body.classList.contains('dark-mode') ? '#2a1a1a' : '#ffe6e6';
                 showSuccess(`Selected: ${server.name}`);
             });
             
@@ -1073,6 +1358,10 @@ function refreshOutput() {
         outputText = makeCSV();
     } else if (currentFormat === 'html') {
         outputText = makeHTML();
+    } else if (currentFormat === 'txt') {
+        outputText = makeTXT();
+    } else if (currentFormat === 'i64') {
+        outputText = makeI64();
     }
     
     outputArea.value = outputText;
@@ -1117,6 +1406,33 @@ function makeHTML() {
     `).join('')}
 </body>
 </html>`;
+}
+
+function makeTXT() {
+    let output = `Discord Members Export\n`;
+    output += `Generated: ${new Date().toLocaleString()}\n`;
+    output += `Total Members: ${currentMembers.length}\n`;
+    output += `Bots: ${currentMembers.filter(m => m.is_bot).length}\n`;
+    output += `Roles: ${roleSet.size}\n`;
+    output += '='.repeat(50) + '\n\n';
+    
+    currentMembers.forEach((member, index) => {
+        output += `${index + 1}. ${member.username} (${member.id})\n`;
+        output += `   Display: ${member.nickname || member.global_name || member.username}\n`;
+        output += `   Bot: ${member.is_bot ? 'Yes' : 'No'}\n`;
+        output += `   Joined: ${member.joined}\n`;
+        output += `   Roles: ${member.roles.join(', ') || 'None'}\n\n`;
+    });
+    
+    return output;
+}
+
+function makeI64() {
+    let output = '';
+    currentMembers.forEach(member => {
+        output += `${member.id}|${member.username}|${member.nickname || ''}|${member.is_bot ? '1' : '0'}|${member.joined}|${member.roles.join(',')}\n`;
+    });
+    return output;
 }
 
 function saveToFile() {
@@ -1187,12 +1503,14 @@ function startLoading() {
     loadingEl.style.display = 'block';
     scrapeBtn.disabled = true;
     fetchServersBtn.disabled = true;
+    testDataBtn.disabled = true;
 }
 
 function stopLoading() {
     loadingEl.style.display = 'none';
     scrapeBtn.disabled = false;
     fetchServersBtn.disabled = false;
+    testDataBtn.disabled = false;
 }
 
 function showSuccess(msg) {
