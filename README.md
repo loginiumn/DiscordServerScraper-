@@ -1,6 +1,6 @@
 # DiscordServerScraper
 
-> A browser-based tool that exports Discord server member lists using Discord token authentication.
+> A **browser-based tool** that exports Discord server member lists using Discord token authentication.
 
 ## Features
 
@@ -12,5 +12,6 @@
 
 ---
 
-## Issues
-- https://github.com/loginiumn/DiscordServerScraper/issues/1
+## Guides
+- Read the [Token.md](https://github.com/loginiumn/DiscordServerScraper/blob/main/Token.md)
+- It'll help you on how to get your discord token. 
